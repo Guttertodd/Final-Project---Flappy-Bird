@@ -6,6 +6,7 @@ namespace Final_Project___Flappy_Bird
 {
     enum Screen
     {
+        introBackground,
         background
     }
     public class Game1 : Game
@@ -15,11 +16,15 @@ namespace Final_Project___Flappy_Bird
 
         Rectangle window;
 
-        Texture2D backgroundTexture;
-        Texture2D batmanTexture;
-        Texture2D pipeTexture;
-        
+        Texture2D backgroundTexture, batmanTexture, pipeTexture, introBackgroundTexture;
+       
+        Rectangle batmanRect;
+
+        Vector2 batmanSpeed;
+
         SpriteBatch spriteBatch;
+
+        SpriteFont textFont;
 
         Screen screen;
 
@@ -35,7 +40,16 @@ namespace Final_Project___Flappy_Bird
         {
             // TODO: Add your initialization logic here
 
+            batmanRect = new Rectangle(50, 50, 100, 100);
+            batmanSpeed = new Vector2(2, 2);
+
+            window = new Rectangle(0, 0, 800, 600);
+            _graphics.PreferredBackBufferWidth = window.Width;
+            _graphics.PreferredBackBufferHeight = window.Height;
+            _graphics.ApplyChanges();
             base.Initialize();
+
+            screen = Screen.introBackground;
         }
 
         protected override void LoadContent()
@@ -48,6 +62,8 @@ namespace Final_Project___Flappy_Bird
             backgroundTexture = Content.Load<Texture2D>("Background (2)");
             batmanTexture = Content.Load<Texture2D>("Batman");
             pipeTexture = Content.Load<Texture2D>("Pipe");
+            introBackgroundTexture = Content.Load<Texture2D>("Background (2)");
+            textFont = Content.Load<SpriteFont>("File");
         }
 
         protected override void Update(GameTime gameTime)
@@ -57,6 +73,14 @@ namespace Final_Project___Flappy_Bird
 
             // TODO: Add your update logic here
 
+            batmanRect.X += (int)batmanSpeed.X;
+            if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+            {
+                batmanSpeed.X *= 1;
+            }
+
+
+
             base.Update(gameTime);
         }
 
@@ -64,13 +88,31 @@ namespace Final_Project___Flappy_Bird
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+          
 
-            spriteBatch.Draw(backgroundTexture, Vector2, Color.White);
-            
             // TODO: Add your drawing code here
 
-            
+            _spriteBatch.Begin();
+
+            if (screen == Screen.introBackground)
+            {
+                _spriteBatch.Draw(introBackgroundTexture, window, Color.White);
+                _spriteBatch.DrawString(textFont, "Click space to Continue to the Game!", new Vector2(165, 25), Color.White);
+
+            }
+
+            else if (screen == Screen.background)
+            {
+                _spriteBatch.Draw(backgroundTexture, window, Color.White);
+
+                _spriteBatch.Draw(batmanTexture, batmanRect, Color.White);
+               
+
+            }
+
+            _spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
+
+            _spriteBatch.End();
 
 
             base.Draw(gameTime);
