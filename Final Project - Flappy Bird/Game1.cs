@@ -28,6 +28,7 @@ namespace Final_Project___Flappy_Bird
 
         Screen screen;
 
+        MouseState mouseState;
         
         public Game1()
         {
@@ -40,7 +41,7 @@ namespace Final_Project___Flappy_Bird
         {
             // TODO: Add your initialization logic here
 
-            batmanRect = new Rectangle(50, 50, 100, 100);
+            batmanRect = new Rectangle(0, 200, 120, 120);
             batmanSpeed = new Vector2(2, 2);
 
             window = new Rectangle(0, 0, 800, 600);
@@ -59,27 +60,44 @@ namespace Final_Project___Flappy_Bird
 
             // TODO: use this.Content to load your game content here
 
-            backgroundTexture = Content.Load<Texture2D>("Background (2)");
+            backgroundTexture = Content.Load<Texture2D>("Background");
             batmanTexture = Content.Load<Texture2D>("Batman");
             pipeTexture = Content.Load<Texture2D>("Pipe");
-            introBackgroundTexture = Content.Load<Texture2D>("Background (2)");
+            introBackgroundTexture = Content.Load<Texture2D>("Background");
             textFont = Content.Load<SpriteFont>("File");
         }
 
         protected override void Update(GameTime gameTime)
+
         {
+
+            mouseState = Mouse.GetState();
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
-
-            batmanRect.X += (int)batmanSpeed.X;
-            if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+            if (screen == Screen.background)
             {
-                batmanSpeed.X *= 1;
+                batmanRect.X += (int)batmanSpeed.X;
+                if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+                {
+                    batmanSpeed.X *= 1;
+                }
             }
+            //    batmanRect.X += (int)batmanSpeed.X;
+            //if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+            //{
+            //    batmanSpeed.X *= 1;
+            //}
 
+            if (screen == Screen.introBackground)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed)
 
+                    screen = Screen.background;
+            }
 
             base.Update(gameTime);
         }
@@ -97,7 +115,9 @@ namespace Final_Project___Flappy_Bird
             if (screen == Screen.introBackground)
             {
                 _spriteBatch.Draw(introBackgroundTexture, window, Color.White);
-                _spriteBatch.DrawString(textFont, "Click space to Continue to the Game!", new Vector2(165, 25), Color.White);
+                _spriteBatch.DrawString(textFont, "How To Play:", new Vector2(320, 75), Color.White);
+                _spriteBatch.DrawString(textFont, "Space Bar = Jump, Don't Hit the Pipe, 25 Score = Win!", new Vector2(15, 180), Color.White);
+                _spriteBatch.DrawString(textFont, "Left Click to Continue to the Game!", new Vector2(165, 300), Color.White);
 
             }
 
@@ -110,7 +130,7 @@ namespace Final_Project___Flappy_Bird
 
             }
 
-            _spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
+            
 
             _spriteBatch.End();
 
