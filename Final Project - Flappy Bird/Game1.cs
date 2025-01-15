@@ -16,11 +16,11 @@ namespace Final_Project___Flappy_Bird
 
         Rectangle window;
 
-        Texture2D backgroundTexture, batmanTexture, pipeTexture, introBackgroundTexture;
-       
-        Rectangle batmanRect;
+        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture;
 
-        Vector2 batmanSpeed;
+        Rectangle batmanRect, backgroundRect, background2Rect;
+
+        Vector2 batmanSpeed, backgroundSpeed, background2Speed;
 
         SpriteBatch spriteBatch;
 
@@ -43,6 +43,10 @@ namespace Final_Project___Flappy_Bird
 
             batmanRect = new Rectangle(0, 200, 120, 120);
             batmanSpeed = new Vector2(2, 2);
+            backgroundRect = new Rectangle(800,0,800,600);
+            background2Rect = new Rectangle(0, 0, 800, 600);
+
+            backgroundSpeed = new Vector2(-2,0);    
 
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -61,6 +65,7 @@ namespace Final_Project___Flappy_Bird
             // TODO: use this.Content to load your game content here
 
             backgroundTexture = Content.Load<Texture2D>("Background");
+            //background2Texture = Content.Load<Texture2D>("Background");
             batmanTexture = Content.Load<Texture2D>("Batman");
             pipeTexture = Content.Load<Texture2D>("Pipe");
             introBackgroundTexture = Content.Load<Texture2D>("Background");
@@ -80,19 +85,25 @@ namespace Final_Project___Flappy_Bird
             // TODO: Add your update logic here
             if (screen == Screen.background)
             {
-                batmanRect.X += (int)batmanSpeed.X;
-                if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+                //atmanRect.X += (int)batmanSpeed.X;
+                //if (batmanRect.Right > window.Width || batmanRect.Left < 0)
+                //{
+                //    batmanSpeed.X *= 1;
+                //}
+                backgroundRect.Offset(backgroundSpeed);
+                background2Rect.Offset(backgroundSpeed);
+                if (backgroundRect.Right <= 0)
                 {
-                    batmanSpeed.X *= 1;
+                    
                 }
-            }
-            //    batmanRect.X += (int)batmanSpeed.X;
-            //if (batmanRect.Right > window.Width || batmanRect.Left < 0)
-            //{
-            //    batmanSpeed.X *= 1;
-            //}
+                if (background2Rect.Right <= 0) 
+                { 
+                }
 
-            if (screen == Screen.introBackground)
+            }
+            
+
+            else if (screen == Screen.introBackground)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
 
@@ -123,7 +134,8 @@ namespace Final_Project___Flappy_Bird
 
             else if (screen == Screen.background)
             {
-                _spriteBatch.Draw(backgroundTexture, window, Color.White);
+                _spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+                _spriteBatch.Draw(backgroundTexture, background2Rect, Color.White);
 
                 _spriteBatch.Draw(batmanTexture, batmanRect, Color.White);
                
