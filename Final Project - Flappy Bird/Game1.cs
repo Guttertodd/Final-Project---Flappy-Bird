@@ -18,9 +18,9 @@ namespace Final_Project___Flappy_Bird
 
         Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture;
 
-        Rectangle batmanRect, backgroundRect, background2Rect;
+        Rectangle batmanRect, backgroundRect, background2Rect, pipeRect, pipe2Rect, pipe3Rect;
 
-        Vector2 batmanSpeed, backgroundSpeed, background2Speed;
+        Vector2 batmanSpeed, backgroundSpeed, background2Speed, pipeSpeed;
 
         SpriteBatch spriteBatch;
 
@@ -45,8 +45,11 @@ namespace Final_Project___Flappy_Bird
             batmanSpeed = new Vector2(2, 2);
             backgroundRect = new Rectangle(800,0,800,600);
             background2Rect = new Rectangle(0, 0, 800, 600);
-
             backgroundSpeed = new Vector2(-2,0);    
+            pipeRect = new Rectangle(790, 200, 200, 600);
+            pipe2Rect = new Rectangle(1190, 300, 200, 600);
+            pipe3Rect = new Rectangle(1590, 375, 200, 600);
+            pipeSpeed = new Vector2(-2,0);
 
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -66,8 +69,8 @@ namespace Final_Project___Flappy_Bird
 
             backgroundTexture = Content.Load<Texture2D>("Background");
             //background2Texture = Content.Load<Texture2D>("Background");
-            batmanTexture = Content.Load<Texture2D>("Batman");
-            pipeTexture = Content.Load<Texture2D>("Pipe");
+            batmanTexture = Content.Load<Texture2D>("Batman1");
+            pipeTexture = Content.Load<Texture2D>("Pipe2");
             introBackgroundTexture = Content.Load<Texture2D>("Background");
             textFont = Content.Load<SpriteFont>("File");
         }
@@ -94,14 +97,30 @@ namespace Final_Project___Flappy_Bird
                 background2Rect.Offset(backgroundSpeed);
                 if (backgroundRect.Right <= 0)
                 {
-                    
+                    backgroundRect.X = window.Width;
                 }
                 if (background2Rect.Right <= 0) 
-                { 
+                {
+                    background2Rect.X = window.Width;
                 }
-
+                
+                
             }
-            
+            pipeRect.Offset(pipeSpeed);
+            pipe2Rect.Offset(pipeSpeed);
+            pipe3Rect.Offset(pipeSpeed);
+            if (pipeRect.Right <= 0)
+            {
+                pipeRect.X = window.Width;
+            }
+            if (pipe2Rect.Right <= 0)
+            {
+                pipeRect.X = window.Width;
+            }
+            if (pipe3Rect.Right <= 0)
+            {
+                pipeRect.X = window.Width;
+            }
 
             else if (screen == Screen.introBackground)
             {
@@ -138,8 +157,10 @@ namespace Final_Project___Flappy_Bird
                 _spriteBatch.Draw(backgroundTexture, background2Rect, Color.White);
 
                 _spriteBatch.Draw(batmanTexture, batmanRect, Color.White);
-               
 
+                _spriteBatch.Draw(pipeTexture, pipeRect, Color.White);
+                _spriteBatch.Draw(pipeTexture, pipe2Rect, Color.White);
+                _spriteBatch.Draw(pipeTexture, pipe3Rect, Color.White);
             }
 
             
