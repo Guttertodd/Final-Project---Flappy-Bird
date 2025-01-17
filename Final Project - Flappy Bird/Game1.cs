@@ -16,11 +16,11 @@ namespace Final_Project___Flappy_Bird
 
         Rectangle window;
 
-        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture;
+        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture, backwardsPipeTexture;
 
-        Rectangle batmanRect, backgroundRect, background2Rect, pipeRect, pipe2Rect, pipe3Rect;
+        Rectangle batmanRect, backgroundRect, background2Rect, pipeRect, pipe2Rect, pipe3Rect, backwardsPipeRect, backwardsPipe2Rect, backwardsPipe3Rect;
 
-        Vector2 batmanSpeed, backgroundSpeed, background2Speed, pipeSpeed;
+        Vector2 batmanSpeed, backgroundSpeed, background2Speed, pipeSpeed, backwardsPipeSpeed;
 
         SpriteBatch spriteBatch;
 
@@ -45,11 +45,17 @@ namespace Final_Project___Flappy_Bird
             batmanSpeed = new Vector2(2, 2);
             backgroundRect = new Rectangle(800,0,800,600);
             background2Rect = new Rectangle(0, 0, 800, 600);
-            backgroundSpeed = new Vector2(-2,0);    
-            pipeRect = new Rectangle(790, 200, 200, 600);
-            pipe2Rect = new Rectangle(1190, 300, 200, 600);
-            pipe3Rect = new Rectangle(1590, 375, 200, 600);
+            backgroundSpeed = new Vector2(-2,0); 
+            
+            pipeRect = new Rectangle(790, 500, 200, 350);
+            pipe2Rect = new Rectangle(1140, 300, 200, 600);
+            pipe3Rect = new Rectangle(1490, 375, 200, 600);
             pipeSpeed = new Vector2(-2,0);
+
+            backwardsPipeRect = new Rectangle(790, 0, 200, 350);
+            backwardsPipe2Rect = new Rectangle(300, 1140, 200, 600);
+            backwardsPipe3Rect = new Rectangle(375, 1490, 200, 600);
+            backwardsPipeSpeed = new Vector2(-2, 0);
 
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -73,6 +79,7 @@ namespace Final_Project___Flappy_Bird
             pipeTexture = Content.Load<Texture2D>("Pipe2");
             introBackgroundTexture = Content.Load<Texture2D>("Background");
             textFont = Content.Load<SpriteFont>("File");
+            backwardsPipeTexture = Content.Load<Texture2D>("UpsideDownPipe");
         }
 
         protected override void Update(GameTime gameTime)
@@ -103,8 +110,23 @@ namespace Final_Project___Flappy_Bird
                 {
                     background2Rect.X = window.Width;
                 }
+                 
                 
-                
+            }
+            backwardsPipeRect.Offset(backwardsPipeSpeed);
+            backwardsPipe2Rect.Offset(backwardsPipeSpeed); 
+            backwardsPipe3Rect.Offset(backwardsPipeSpeed);
+            if (backwardsPipeRect.Right <= 0)
+            {
+                backwardsPipeRect.X = window.Width;
+            }
+            if (backwardsPipe2Rect.Right <= 0)
+            {
+                backwardsPipe2Rect.X = window.Width;
+            }
+            if (backwardsPipe3Rect.Right <= 0)
+            {
+                backwardsPipe3Rect.X = window.Width;
             }
             pipeRect.Offset(pipeSpeed);
             pipe2Rect.Offset(pipeSpeed);
@@ -115,13 +137,12 @@ namespace Final_Project___Flappy_Bird
             }
             if (pipe2Rect.Right <= 0)
             {
-                pipeRect.X = window.Width;
+                pipe2Rect.X = window.Width;
             }
             if (pipe3Rect.Right <= 0)
             {
-                pipeRect.X = window.Width;
+                pipe3Rect.X = window.Width;
             }
-
             else if (screen == Screen.introBackground)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
