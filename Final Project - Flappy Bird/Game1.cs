@@ -8,7 +8,8 @@ namespace Final_Project___Flappy_Bird
     enum Screen
     {
         introBackground,
-        background
+        background,
+        end
     }
     public class Game1 : Game
     {
@@ -17,7 +18,7 @@ namespace Final_Project___Flappy_Bird
 
         Rectangle window;
 
-        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture, backwardsPipeTexture;
+        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture, backwardsPipeTexture, endTexture;
 
         Rectangle batmanRect, backgroundRect, background2Rect, pipeRect, pipe2Rect, pipe3Rect, backwardsPipeRect, backwardsPipe2Rect, backwardsPipe3Rect;
 
@@ -64,7 +65,7 @@ namespace Final_Project___Flappy_Bird
             backgroundSound = false;
            
 
-            batmanRect = new Rectangle(0, 200, 120, 120);
+            batmanRect = new Rectangle(0, 200, 100, 100);
             batmanSpeed = new Vector2(0, 2);
             backgroundRect = new Rectangle(800,0,800,600);
             background2Rect = new Rectangle(0, 0, 800, 600);
@@ -105,6 +106,7 @@ namespace Final_Project___Flappy_Bird
             textFont = Content.Load<SpriteFont>("File");
             backwardsPipeTexture = Content.Load<Texture2D>("UpsideDownPipe");
             backgroundMusic = Content.Load<SoundEffect>("BackgroundChill");
+            endTexture = Content.Load<Texture2D>("Background");
         }
 
         protected override void Update(GameTime gameTime)
@@ -121,19 +123,19 @@ namespace Final_Project___Flappy_Bird
             // TODO: Add your update logic here
             if (screen == Screen.background)
             {
-               if (screen == Screen.background)
-                {
-                    backgroundMusic.Play();
-                    backgroundSound = true;
-                }
-                if (backgroundSound)
-                {
-                    soundCount += 1;
-                }
-                if (soundCount > 500)
-                {
-                    backgroundSound = false;
-                }
+               //if (screen == Screen.background)
+               // {
+               //     backgroundMusic.Play();
+               //     backgroundSound = true;
+               // }
+               // if (backgroundSound)
+               // {
+               //     soundCount += 1;
+               // }
+               // if (soundCount > 500)
+               // {
+               //     backgroundSound = false;
+               // }
                     
                 
                
@@ -197,7 +199,31 @@ namespace Final_Project___Flappy_Bird
                     isJumping = false;
                     flapCount = 0;
                 }
-
+                else if (batmanRect.Intersects(pipeRect))
+                {
+                    screen = Screen.end;
+                }
+                else if (batmanRect.Intersects(pipe2Rect))
+                {
+                    screen = Screen.end;
+                }
+                else if (batmanRect.Intersects(pipe3Rect))
+                {
+                    screen = Screen.end;
+                }
+                else if (batmanRect.Intersects(backwardsPipeRect))
+                {
+                    screen = Screen.end;
+                }
+                else if (batmanRect.Intersects(backwardsPipe2Rect))
+                {
+                    screen = Screen.end;
+                }
+                else if (batmanRect.Intersects(backwardsPipe3Rect))
+                {
+                    screen = Screen.end;
+                }
+                
 
                 batmanRect.Offset(batmanSpeed);
 
@@ -209,7 +235,10 @@ namespace Final_Project___Flappy_Bird
                     screen = Screen.background;
             }
 
-            
+            //else if (batmanRect.Intersects(pipeRect))
+            //{
+            //    screen = Screen.end;
+            //}
             
 
             base.Update(gameTime);
@@ -250,7 +279,12 @@ namespace Final_Project___Flappy_Bird
                 _spriteBatch.Draw(backwardsPipeTexture, backwardsPipe3Rect, Color.White);
             }
 
-            
+            else if (screen == Screen.end)
+            {
+                _spriteBatch.Draw(endTexture, window, Color.White);
+                _spriteBatch.DrawString(textFont, "You Died!", new Vector2(315,200), Color.White);
+                _spriteBatch.DrawString(textFont, "Left Click To Restart!", new Vector2(245, 300), Color.White);
+            }
 
             _spriteBatch.End();
 
