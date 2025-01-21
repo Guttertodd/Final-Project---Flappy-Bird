@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -32,8 +33,17 @@ namespace Final_Project___Flappy_Bird
 
         KeyboardState keyboardState, previousKeyboardState;
 
-        
-        
+        int flapCount;
+
+        bool isJumping;
+
+        SoundEffect backgroundMusic;
+
+        int soundCount;
+
+        bool backgroundSound;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,6 +54,15 @@ namespace Final_Project___Flappy_Bird
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            flapCount = 0;
+
+            isJumping = false;
+
+            soundCount = 0;
+
+            backgroundSound = false;
+           
 
             batmanRect = new Rectangle(0, 200, 120, 120);
             batmanSpeed = new Vector2(0, 2);
@@ -60,6 +79,7 @@ namespace Final_Project___Flappy_Bird
             backwardsPipe2Rect = new Rectangle(1140, 0, 200, 200);
             backwardsPipe3Rect = new Rectangle(1490, 0, 200, 300);
             backwardsPipeSpeed = new Vector2(-2, 0);
+
 
             window = new Rectangle(0, 0, 800, 600);
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -84,6 +104,7 @@ namespace Final_Project___Flappy_Bird
             introBackgroundTexture = Content.Load<Texture2D>("Background");
             textFont = Content.Load<SpriteFont>("File");
             backwardsPipeTexture = Content.Load<Texture2D>("UpsideDownPipe");
+            backgroundMusic = Content.Load<SoundEffect>("BackgroundChill");
         }
 
         protected override void Update(GameTime gameTime)
@@ -100,11 +121,23 @@ namespace Final_Project___Flappy_Bird
             // TODO: Add your update logic here
             if (screen == Screen.background)
             {
-                //atmanRect.X += (int)batmanSpeed.X;
-                //if (batmanRect.Right > window.Width || batmanRect.Left < 0)
-                //{
-                //    batmanSpeed.X *= 1;
-                //}
+               if (screen == Screen.background)
+                {
+                    backgroundMusic.Play();
+                    backgroundSound = true;
+                }
+                if (backgroundSound)
+                {
+                    soundCount += 1;
+                }
+                if (soundCount > 500)
+                {
+                    backgroundSound = false;
+                }
+                    
+                
+               
+                
                 backgroundRect.Offset(backgroundSpeed);
                 background2Rect.Offset(backgroundSpeed);
                 if (backgroundRect.Right <= 0)
@@ -147,17 +180,27 @@ namespace Final_Project___Flappy_Bird
                     pipe3Rect.X = window.Width;
                 }
 
+
+                if (keyboardState.IsKeyDown(Keys.Space) && !isJumping)
+                {
+                    batmanSpeed.Y = -2;     
+                    isJumping = true;
+                }
+                if (isJumping)
+                {
+                    flapCount += 1;
+                }
+
+                if (flapCount > 12)
+                {
+                    batmanSpeed.Y = 2;
+                    isJumping = false;
+                    flapCount = 0;
+                }
+
+
                 batmanRect.Offset(batmanSpeed);
-                if (batmanRect.Right <= 0)
-                {
-                    batmanRect.X = window.Width;
-                }
-                else if (keyboardState.IsKeyDown(Keys.Space))
-                {
-                    batmanSpeed.Y = -2; 
-                    
-                }
-                
+
             }
             else if (screen == Screen.introBackground)
             {

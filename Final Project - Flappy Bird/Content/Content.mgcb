@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:Background.png
 
+#begin BackgroundChill.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BackgroundChill.wav
+
 #begin Batman1.png
 /importer:TextureImporter
 /processor:TextureProcessor
