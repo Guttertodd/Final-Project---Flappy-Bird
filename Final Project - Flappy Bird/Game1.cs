@@ -55,29 +55,8 @@ namespace Final_Project___Flappy_Bird
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            flapCount = 0;
-
-            isJumping = false;
-
-           
-           
-
-            batmanRect = new Rectangle(0, 200, 80, 80);
-            batmanSpeed = new Vector2(0, 2);
-            backgroundRect = new Rectangle(800,0,800,600);
-            background2Rect = new Rectangle(0, 0, 800, 600);
-            backgroundSpeed = new Vector2(-2,0); 
+            InitializeGameObjects();
             
-            pipeRect = new Rectangle(600, 475, 50, 350);
-            pipe2Rect = new Rectangle(1000, 275, 50, 575);
-            pipe3Rect = new Rectangle(1400, 350, 50, 600);
-            pipeSpeed = new Vector2(-2,0);
-
-            backwardsPipeRect = new Rectangle(600, 0, 50, 270);
-            backwardsPipe2Rect = new Rectangle(1000, 0, 50, 100);
-            backwardsPipe3Rect = new Rectangle(1400, 0, 50, 170);
-            backwardsPipeSpeed = new Vector2(-2, 0);
 
 
             window = new Rectangle(0, 0, 800, 600);
@@ -142,7 +121,7 @@ namespace Final_Project___Flappy_Bird
                 background2Rect.Offset(backgroundSpeed);
                 if (backgroundRect.Right <= 0)
                 {
-                    backgroundRect.X = window.Width;
+                    backgroundRect.X = window.Width;   
                 }
                 if (background2Rect.Right <= 0)
                 {
@@ -154,30 +133,30 @@ namespace Final_Project___Flappy_Bird
                 backwardsPipe3Rect.Offset(backwardsPipeSpeed);
                 if (backwardsPipeRect.Right <= 0)
                 {
-                    backwardsPipeRect.X = window.Width + 270;
+                    backwardsPipeRect.X = window.Width + 220;    
                 }
                 if (backwardsPipe2Rect.Right <= 0)
                 {
-                    backwardsPipe2Rect.X = window.Width + 200;
+                    backwardsPipe2Rect.X = window.Width + 220;
                 }
                 if (backwardsPipe3Rect.Right <= 0)
                 {
-                    backwardsPipe3Rect.X = window.Width + 200;
+                    backwardsPipe3Rect.X = window.Width + 220;
                 }
                 pipeRect.Offset(pipeSpeed);
                 pipe2Rect.Offset(pipeSpeed);
                 pipe3Rect.Offset(pipeSpeed);
                 if (pipeRect.Right <= 0)
                 {
-                    pipeRect.X = window.Width + 270;
+                    pipeRect.X = window.Width + 220;
                 }
                 if (pipe2Rect.Right <= 0)
                 {
-                    pipe2Rect.X = window.Width + 200;
+                    pipe2Rect.X = window.Width + 220;
                 }
                 if (pipe3Rect.Right <= 0)
                 {
-                    pipe3Rect.X = window.Width + 200;
+                    pipe3Rect.X = window.Width + 220;
                 }
 
 
@@ -228,16 +207,22 @@ namespace Final_Project___Flappy_Bird
             }
             else if (screen == Screen.introBackground)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
-
+                if (mouseState.LeftButton == ButtonState.Pressed & previousMouseState.LeftButton == ButtonState.Released)
+                {
                     screen = Screen.background;
+                    //backgroundSound.Play();
+                }
+
             }
 
             else if (screen == Screen.end)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
-
+                {
                     screen = Screen.introBackground;
+                    InitializeGameObjects();
+                }
+
             }
 
             //else if (batmanRect.Intersects(pipeRect))
@@ -295,6 +280,32 @@ namespace Final_Project___Flappy_Bird
 
 
             base.Draw(gameTime);
+        }
+
+        public void InitializeGameObjects()
+        {
+            flapCount = 0;
+
+            isJumping = false;
+
+
+
+
+            batmanRect = new Rectangle(0, 200, 80, 80);
+            batmanSpeed = new Vector2(0, 2);
+            backgroundRect = new Rectangle(800, 0, 800, 600);
+            background2Rect = new Rectangle(0, 0, 800, 600);
+            backgroundSpeed = new Vector2(-2, 0);
+
+            pipeRect = new Rectangle(500, 475, 50, 350);
+            pipe2Rect = new Rectangle(900, 275, 50, 575);
+            pipe3Rect = new Rectangle(1300, 350, 50, 600);
+            pipeSpeed = new Vector2(-2, 0);
+
+            backwardsPipeRect = new Rectangle(500, 0, 50, 270);
+            backwardsPipe2Rect = new Rectangle(900, 0, 50, 100);
+            backwardsPipe3Rect = new Rectangle(1300, 0, 50, 170);
+            backwardsPipeSpeed = new Vector2(-2, 0);
         }
     }
 }
