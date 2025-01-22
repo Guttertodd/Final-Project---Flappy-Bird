@@ -30,7 +30,7 @@ namespace Final_Project___Flappy_Bird
 
         Screen screen;
 
-        MouseState mouseState;
+        MouseState mouseState, previousMouseState;
 
         KeyboardState keyboardState, previousKeyboardState;
 
@@ -60,25 +60,23 @@ namespace Final_Project___Flappy_Bird
 
             isJumping = false;
 
-            soundCount = 0;
-
-            backgroundSound = false;
+           
            
 
-            batmanRect = new Rectangle(0, 200, 100, 100);
+            batmanRect = new Rectangle(0, 200, 80, 80);
             batmanSpeed = new Vector2(0, 2);
             backgroundRect = new Rectangle(800,0,800,600);
             background2Rect = new Rectangle(0, 0, 800, 600);
             backgroundSpeed = new Vector2(-2,0); 
             
-            pipeRect = new Rectangle(790, 500, 200, 350);
-            pipe2Rect = new Rectangle(1140, 300, 200, 600);
-            pipe3Rect = new Rectangle(1490, 375, 200, 600);
+            pipeRect = new Rectangle(600, 475, 50, 350);
+            pipe2Rect = new Rectangle(1000, 275, 50, 575);
+            pipe3Rect = new Rectangle(1400, 350, 50, 600);
             pipeSpeed = new Vector2(-2,0);
 
-            backwardsPipeRect = new Rectangle(790, 0, 200, 450);
-            backwardsPipe2Rect = new Rectangle(1140, 0, 200, 200);
-            backwardsPipe3Rect = new Rectangle(1490, 0, 200, 300);
+            backwardsPipeRect = new Rectangle(600, 0, 50, 270);
+            backwardsPipe2Rect = new Rectangle(1000, 0, 50, 100);
+            backwardsPipe3Rect = new Rectangle(1400, 0, 50, 170);
             backwardsPipeSpeed = new Vector2(-2, 0);
 
 
@@ -100,11 +98,11 @@ namespace Final_Project___Flappy_Bird
 
             backgroundTexture = Content.Load<Texture2D>("Background");
             //background2Texture = Content.Load<Texture2D>("Background");
-            batmanTexture = Content.Load<Texture2D>("Batman1");
-            pipeTexture = Content.Load<Texture2D>("Pipe2");
+            batmanTexture = Content.Load<Texture2D>("BatmanGame");
+            pipeTexture = Content.Load<Texture2D>("PipeBottom");
             introBackgroundTexture = Content.Load<Texture2D>("Background");
             textFont = Content.Load<SpriteFont>("File");
-            backwardsPipeTexture = Content.Load<Texture2D>("UpsideDownPipe");
+            backwardsPipeTexture = Content.Load<Texture2D>("PipeTop");
             backgroundMusic = Content.Load<SoundEffect>("BackgroundChill");
             endTexture = Content.Load<Texture2D>("Background");
         }
@@ -112,7 +110,7 @@ namespace Final_Project___Flappy_Bird
         protected override void Update(GameTime gameTime)
 
         {
-
+            previousMouseState = mouseState;
             mouseState = Mouse.GetState();
             keyboardState = Keyboard.GetState();
             previousKeyboardState = keyboardState;
@@ -156,30 +154,30 @@ namespace Final_Project___Flappy_Bird
                 backwardsPipe3Rect.Offset(backwardsPipeSpeed);
                 if (backwardsPipeRect.Right <= 0)
                 {
-                    backwardsPipeRect.X = window.Width;
+                    backwardsPipeRect.X = window.Width + 270;
                 }
                 if (backwardsPipe2Rect.Right <= 0)
                 {
-                    backwardsPipe2Rect.X = window.Width;
+                    backwardsPipe2Rect.X = window.Width + 200;
                 }
                 if (backwardsPipe3Rect.Right <= 0)
                 {
-                    backwardsPipe3Rect.X = window.Width;
+                    backwardsPipe3Rect.X = window.Width + 200;
                 }
                 pipeRect.Offset(pipeSpeed);
                 pipe2Rect.Offset(pipeSpeed);
                 pipe3Rect.Offset(pipeSpeed);
                 if (pipeRect.Right <= 0)
                 {
-                    pipeRect.X = window.Width;
+                    pipeRect.X = window.Width + 270;
                 }
                 if (pipe2Rect.Right <= 0)
                 {
-                    pipe2Rect.X = window.Width;
+                    pipe2Rect.X = window.Width + 200;
                 }
                 if (pipe3Rect.Right <= 0)
                 {
-                    pipe3Rect.X = window.Width;
+                    pipe3Rect.X = window.Width + 200;
                 }
 
 
@@ -193,7 +191,7 @@ namespace Final_Project___Flappy_Bird
                     flapCount += 1;
                 }
 
-                if (flapCount > 12)
+                if (flapCount > 15)
                 {
                     batmanSpeed.Y = 2;
                     isJumping = false;
@@ -233,6 +231,13 @@ namespace Final_Project___Flappy_Bird
                 if (mouseState.LeftButton == ButtonState.Pressed)
 
                     screen = Screen.background;
+            }
+
+            else if (screen == Screen.end)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+
+                    screen = Screen.introBackground;
             }
 
             //else if (batmanRect.Intersects(pipeRect))
@@ -282,8 +287,8 @@ namespace Final_Project___Flappy_Bird
             else if (screen == Screen.end)
             {
                 _spriteBatch.Draw(endTexture, window, Color.White);
-                _spriteBatch.DrawString(textFont, "You Died!", new Vector2(315,200), Color.White);
-                _spriteBatch.DrawString(textFont, "Left Click To Restart!", new Vector2(245, 300), Color.White);
+                _spriteBatch.DrawString(textFont, "You Died!", new Vector2(335,200), Color.White);
+                _spriteBatch.DrawString(textFont, "Left Click To Restart!", new Vector2(260, 300), Color.White);
             }
 
             _spriteBatch.End();
