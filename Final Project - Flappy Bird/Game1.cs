@@ -233,11 +233,15 @@ namespace Final_Project___Flappy_Bird
                 }
 
             }
-            //else if (points == 25)
-            //{
-            //    screen = Screen.win;
-            //}
             
+            else if (screen == Screen.win)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+                {
+                    screen = Screen.introBackground;
+                    InitializeGameObjects();
+                }
+            }
            
             
 
@@ -293,6 +297,8 @@ namespace Final_Project___Flappy_Bird
             else if (screen == Screen.win)
             {
                 _spriteBatch.Draw(endTexture, window, Color.White);
+                _spriteBatch.DrawString(textFont, "CONGRATULATIONS, YOU WON!", new Vector2(150, 125), Color.White);
+                _spriteBatch.DrawString(textFont, "Left Click If You Want To Play Agian!", new Vector2(135, 240), Color.White);
             }
 
             _spriteBatch.End();
@@ -321,9 +327,9 @@ namespace Final_Project___Flappy_Bird
             pipe3Rect = new Rectangle(1300, 350, 50, 600);
             pipeSpeed = new Vector2(-2, 0);
 
-            backwardsPipeRect = new Rectangle(500, 0, 50, 270);
-            backwardsPipe2Rect = new Rectangle(900, 0, 50, 100);
-            backwardsPipe3Rect = new Rectangle(1300, 0, 50, 170);
+            backwardsPipeRect = new Rectangle(500, 0, 50, 305);
+            backwardsPipe2Rect = new Rectangle(900, 0, 50, 120);
+            backwardsPipe3Rect = new Rectangle(1300, 0, 50, 200);
             backwardsPipeSpeed = new Vector2(-2, 0);
 
             points = 0;
