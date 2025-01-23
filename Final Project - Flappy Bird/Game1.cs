@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Final_Project___Flappy_Bird
 {
@@ -9,7 +10,8 @@ namespace Final_Project___Flappy_Bird
     {
         introBackground,
         background,
-        end
+        end, 
+        win
     }
     public class Game1 : Game
     {
@@ -18,7 +20,7 @@ namespace Final_Project___Flappy_Bird
 
         Rectangle window;
 
-        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture, backwardsPipeTexture, endTexture;
+        Texture2D backgroundTexture,  batmanTexture, pipeTexture, introBackgroundTexture, backwardsPipeTexture, endTexture, winTexture;
 
         Rectangle batmanRect, backgroundRect, background2Rect, pipeRect, pipe2Rect, pipe3Rect, backwardsPipeRect, backwardsPipe2Rect, backwardsPipe3Rect;
 
@@ -36,6 +38,8 @@ namespace Final_Project___Flappy_Bird
 
         int flapCount;
 
+        int points;
+
         bool isJumping;
 
         SoundEffect backgroundMusic;
@@ -43,6 +47,10 @@ namespace Final_Project___Flappy_Bird
         int soundCount;
 
         bool backgroundSound;
+
+        SpriteFont font;
+
+        
 
 
         public Game1()
@@ -56,7 +64,9 @@ namespace Final_Project___Flappy_Bird
         {
             // TODO: Add your initialization logic here
             InitializeGameObjects();
-            
+
+            points = 0;
+           
 
 
             window = new Rectangle(0, 0, 800, 600);
@@ -84,6 +94,8 @@ namespace Final_Project___Flappy_Bird
             backwardsPipeTexture = Content.Load<Texture2D>("PipeTop");
             backgroundMusic = Content.Load<SoundEffect>("BackgroundChill");
             endTexture = Content.Load<Texture2D>("Background");
+            winTexture = Content.Load<Texture2D>("Background");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -100,19 +112,7 @@ namespace Final_Project___Flappy_Bird
             // TODO: Add your update logic here
             if (screen == Screen.background)
             {
-               //if (screen == Screen.background)
-               // {
-               //     backgroundMusic.Play();
-               //     backgroundSound = true;
-               // }
-               // if (backgroundSound)
-               // {
-               //     soundCount += 1;
-               // }
-               // if (soundCount > 500)
-               // {
-               //     backgroundSound = false;
-               // }
+               
                     
                 
                
@@ -121,7 +121,8 @@ namespace Final_Project___Flappy_Bird
                 background2Rect.Offset(backgroundSpeed);
                 if (backgroundRect.Right <= 0)
                 {
-                    backgroundRect.X = window.Width;   
+                    backgroundRect.X = window.Width;
+                    
                 }
                 if (background2Rect.Right <= 0)
                 {
@@ -133,7 +134,7 @@ namespace Final_Project___Flappy_Bird
                 backwardsPipe3Rect.Offset(backwardsPipeSpeed);
                 if (backwardsPipeRect.Right <= 0)
                 {
-                    backwardsPipeRect.X = window.Width + 220;    
+                    backwardsPipeRect.X = window.Width + 225;    
                 }
                 if (backwardsPipe2Rect.Right <= 0)
                 {
@@ -148,15 +149,18 @@ namespace Final_Project___Flappy_Bird
                 pipe3Rect.Offset(pipeSpeed);
                 if (pipeRect.Right <= 0)
                 {
-                    pipeRect.X = window.Width + 220;
+                    pipeRect.X = window.Width + 225;
+                    points += 1;
                 }
                 if (pipe2Rect.Right <= 0)
                 {
                     pipe2Rect.X = window.Width + 220;
+                    points += 1;
                 }
                 if (pipe3Rect.Right <= 0)
                 {
                     pipe3Rect.X = window.Width + 220;
+                    points += 1;
                 }
 
 
@@ -200,6 +204,11 @@ namespace Final_Project___Flappy_Bird
                 {
                     screen = Screen.end;
                 }
+                else if (points == 25)
+                {
+                    screen = Screen.win;
+                }
+
                 
 
                 batmanRect.Offset(batmanSpeed);
@@ -210,7 +219,7 @@ namespace Final_Project___Flappy_Bird
                 if (mouseState.LeftButton == ButtonState.Pressed & previousMouseState.LeftButton == ButtonState.Released)
                 {
                     screen = Screen.background;
-                    //backgroundSound.Play();
+                    backgroundMusic.Play();
                 }
 
             }
@@ -224,11 +233,12 @@ namespace Final_Project___Flappy_Bird
                 }
 
             }
-
-            //else if (batmanRect.Intersects(pipeRect))
+            //else if (points == 25)
             //{
-            //    screen = Screen.end;
+            //    screen = Screen.win;
             //}
+            
+           
             
 
             base.Update(gameTime);
@@ -267,6 +277,10 @@ namespace Final_Project___Flappy_Bird
                 _spriteBatch.Draw(backwardsPipeTexture, backwardsPipeRect, Color.White);
                 _spriteBatch.Draw(backwardsPipeTexture, backwardsPipe2Rect, Color.White);
                 _spriteBatch.Draw(backwardsPipeTexture, backwardsPipe3Rect, Color.White);
+
+                _spriteBatch.DrawString(textFont, "Points:" + points , new Vector2(20, 20), Color.White);
+                
+                
             }
 
             else if (screen == Screen.end)
@@ -274,6 +288,11 @@ namespace Final_Project___Flappy_Bird
                 _spriteBatch.Draw(endTexture, window, Color.White);
                 _spriteBatch.DrawString(textFont, "You Died!", new Vector2(335,200), Color.White);
                 _spriteBatch.DrawString(textFont, "Left Click To Restart!", new Vector2(260, 300), Color.White);
+            }
+
+            else if (screen == Screen.win)
+            {
+                _spriteBatch.Draw(endTexture, window, Color.White);
             }
 
             _spriteBatch.End();
@@ -306,6 +325,8 @@ namespace Final_Project___Flappy_Bird
             backwardsPipe2Rect = new Rectangle(900, 0, 50, 100);
             backwardsPipe3Rect = new Rectangle(1300, 0, 50, 170);
             backwardsPipeSpeed = new Vector2(-2, 0);
+
+            points = 0;
         }
     }
 }
